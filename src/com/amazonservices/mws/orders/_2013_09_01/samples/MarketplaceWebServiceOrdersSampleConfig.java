@@ -25,10 +25,10 @@ import com.amazonservices.mws.orders._2013_09_01.MarketplaceWebServiceOrdersConf
 public class MarketplaceWebServiceOrdersSampleConfig {
 
 	 /** Developer AWS access key. */
-    private static final String accessKey = "***";
+    private static final String accessKey = "****";
  
     /** Developer AWS secret key. */
-    private static final String secretKey = "***";
+    private static final String secretKey = "****";
  
     /** The client application name. */
     private static final String appName = "MyAWESOMEProductExporter'";

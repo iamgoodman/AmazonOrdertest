@@ -17,6 +17,15 @@ package com.amazonservices.mws.orders._2013_09_01.samples;
 
 import java.util.*;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -24,15 +33,20 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.math.BigDecimal;
 
 import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.orders._2013_09_01.*;
 import com.amazonservices.mws.orders._2013_09_01.model.*;
 import com.google.common.collect.Lists;
+import com.sun.xml.internal.txw2.Document;
 
 
 /** Sample call for GetOrder. */
@@ -45,10 +59,18 @@ public class GetOrderSample {
      * @param request
      *
      * @return The response.
+     * @throws IOException 
+     * @throws SAXException 
+     * @throws ParserConfigurationException 
+     * @throws TransformerException 
      */
+	
+	//global counter for generating multiple order files
+	static int count  = 0;
+	
     public static GetOrderResponse invokeGetOrder(
             MarketplaceWebServiceOrders client, 
-            GetOrderRequest request) {
+            GetOrderRequest request) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         try {
             // Call the service.
             GetOrderResponse response = client.getOrder(request);
@@ -60,10 +82,36 @@ public class GetOrderSample {
             
             System.out.println("Timestamp: "+rhmd.getTimestamp());
             
-            String responseXml = response.toXMLFragment();
+            String responseXml = response.toXML();
       
+            
+            
             System.out.println(responseXml);
             
+            
+            
+            
+            //try to out put response xml to file 
+            
+            
+            // Parse the given input
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            org.w3c.dom.Document doc = builder.parse(new InputSource(new StringReader(responseXml)));
+
+            // Write the parsed document to an xml file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+         
+            
+            StreamResult result =  new StreamResult(new File("Y:\\Staffs\\Joey\\Developer\\JoeyAdvisor\\completeorders"+count+ ".xml"));
+            
+            
+            transformer.transform(source, result);
+            
+           count++;
+    		
             return response;
             
             
@@ -100,9 +148,15 @@ public class GetOrderSample {
     /**
      *  Command line entry point.
      * @throws InterruptedException 
+     * @throws IOException 
+     * @throws ParserConfigurationException 
+     * @throws SAXException 
+     * @throws TransformerException 
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException, SAXException, ParserConfigurationException, TransformerException {
 
+    	
+    	
     	
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceOrdersSampleConfig.
@@ -122,7 +176,7 @@ public class GetOrderSample {
         
         
         
-        String mwsAuthToken = "***";
+        String mwsAuthToken = "****";
         
         
  
@@ -256,6 +310,9 @@ public class GetOrderSample {
 
           // Make the call.
           GetOrderSample.invokeGetOrder(client, request);
+          
+          
+          
           Thread.sleep(10000);
           
           
