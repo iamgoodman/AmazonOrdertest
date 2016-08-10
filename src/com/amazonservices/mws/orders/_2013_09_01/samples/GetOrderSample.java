@@ -31,16 +31,27 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.crypt.Decryptor;
+import org.apache.poi.poifs.crypt.EncryptionInfo;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.math.BigDecimal;
+import java.security.GeneralSecurityException;
 
 import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.orders._2013_09_01.*;
@@ -70,7 +81,7 @@ public class GetOrderSample {
 	
     public static GetOrderResponse invokeGetOrder(
             MarketplaceWebServiceOrders client, 
-            GetOrderRequest request) throws IOException, SAXException, ParserConfigurationException, TransformerException {
+            GetOrderRequest request) throws GeneralSecurityException, Exception {
         try {
             // Call the service.
             GetOrderResponse response = client.getOrder(request);
@@ -99,6 +110,7 @@ public class GetOrderSample {
             DocumentBuilder builder = factory.newDocumentBuilder();
             org.w3c.dom.Document doc = builder.parse(new InputSource(new StringReader(responseXml)));
 
+            
             // Write the parsed document to an xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -110,12 +122,162 @@ public class GetOrderSample {
             
             transformer.transform(source, result);
             
-           count++;
-    		
+            //to do
+            //how to use code do open xml and output excel and save as xls.
+            
+            
+         
+      
+            
+            
+              //create a class to store all variables generated from result form implementation to the DB
+             
+            //try to use jexcelapi to accheive 
+       
+            
+            InputStream fin = new FileInputStream("Y:\\Staffs\\Joey\\Developer\\JoeyAdvisor\\completeorders"+count+ ".xml");
+            
+        	
+         
+
+         
+			
+			
+            FileInputStream input = new FileInputStream("Y:\\Staffs\\Joey\\Developer\\JoeyAdvisor\\ordertest"+count+ ".xls");  
+                POIFSFileSystem fs = new POIFSFileSystem( input );  
+                HSSFWorkbook wb = new HSSFWorkbook(fs);  
+                HSSFSheet sheet = wb.getSheetAt(0);  
+                HSSFRow row;  
+                
+                //format int cells to string
+                
+                DataFormatter formatter = new DataFormatter();
+
+                for(int i=1; i<=sheet.getLastRowNum(); i++)
+                {  
+                    Amazonorders order = new Amazonorders(responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, null, null, null, responseXml, responseXml, responseXml, responseXml, responseXml, null, responseXml, responseXml, responseXml);
+                    row = sheet.getRow(i);  
+
+
+	                  order.setAmazonorderid(String.valueOf(row.getCell(0).getRichStringCellValue()));  
+	                  System.out.println(order.getAmazonorderid());
+	                  
+	                  order.setSellerorderid(String.valueOf(row.getCell(1).getRichStringCellValue()));
+	                  System.out.println(order.getSellerorderid());
+	                  
+                      order.setPurchasedate(String.valueOf(row.getCell(2).getRichStringCellValue()));
+                      System.out.println(order.getPurchasedate());
+                      
+                      order.setLastupdatedate(String.valueOf(row.getCell(3).getRichStringCellValue()));
+                      System.out.println(order.getLastupdatedate());
+                      
+                      order.setOrderstatus(String.valueOf(row.getCell(4).getRichStringCellValue()));
+                      System.out.println(order.getOrderstatus());
+                      
+                      order.setFulfillmentchannel(String.valueOf(row.getCell(5).getRichStringCellValue()));
+                      System.out.println(order.getFulfillmentchannel());
+                      
+                      order.setSaleschannel(String.valueOf(row.getCell(6).getRichStringCellValue()));
+                      System.out.println(order.getSaleschannel());
+                      
+                      order.setShipservicelevel(String.valueOf(row.getCell(7).getRichStringCellValue()));
+                      System.out.println(order.getShipservicelevel());
+                      
+                      order.setCustomername(String.valueOf(row.getCell(8).getRichStringCellValue()));
+                      System.out.println(order.getCustomername());
+                      
+                      order.setStreetname(String.valueOf(row.getCell(9).getRichStringCellValue()));
+                      System.out.println(order.getStreetname());
+                      
+                      order.setCity(String.valueOf(row.getCell(10).getRichStringCellValue()));
+                      System.out.println(order.getCity());
+                      
+                      order.setState(String.valueOf(row.getCell(11).getRichStringCellValue()));
+                      System.out.println(order.getState());
+                      
+                      order.setZip(String.valueOf(row.getCell(12).getRichStringCellValue()));
+                      System.out.println(order.getZip());
+                      
+                      order.setCountry(String.valueOf(row.getCell(13).getRichStringCellValue()));
+                      System.out.println(order.getCountry());
+                      
+                      order.setPhone(String.valueOf(row.getCell(14).getRichStringCellValue()));
+                      System.out.println(order.getPhone());
+                      
+                      //formatter to formatecellvalue from int to string
+                      order.setQtyshipped(formatter.formatCellValue((row.getCell(16))));
+                      System.out.println(order.getQtyshipped());
+                      
+                      
+                      
+                      
+                   /*   //check for null values for currency
+                      String currency =formatter.formatCellValue(row.getCell(26));
+                      
+                      if(currency != null)
+                      {
+                      order.setCurrency(currency);
+                    
+                      System.out.println(order.getCurrency());
+                      }
+                     
+                      
+                      
+                      
+                      //check for null values for amount
+                      String amount =formatter.formatCellValue(row.getCell(27));
+                      
+                      if(amount != null)
+                      {
+                    	  
+                    	  order.setAmount(amount);
+                    	
+                          System.out.println(order.getAmount());
+ 
+                      }
+                      
+           
+                      //check for null values for email
+                      String email =formatter.formatCellValue(row.getCell(29));
+                      
+                      if(email != null)
+                      {
+                    	  order.setEmail(email);
+                    	 
+                         System.out.println(order.getEmail());
+                      }*/
+                      
+                
+                     
+                      //do insertion of sql here
+                
+                      
+                      
+
+                }  
+  
+            
+            
+            
+            
+            
+     
+            
+            
+            
+            
+            
+            
+            
+        count++;
+		
+            
+            
+            
             return response;
             
             
-        } catch (MarketplaceWebServiceOrdersException ex) {
+        } catch ( MarketplaceWebServiceOrdersException ex) {
             // Exception properties are important for diagnostics.
             
         	System.out.println("Service Exception:");
@@ -138,22 +300,29 @@ public class GetOrderSample {
             
             System.out.println("ErrorType: "+ex.getErrorType());
             
+            
+            
+            
+            
             throw ex;
-        }
+        } 
         
         
         
+    
+    	
+    	
+    	
+    	
+    	
     }
 
     /**
      *  Command line entry point.
-     * @throws InterruptedException 
-     * @throws IOException 
-     * @throws ParserConfigurationException 
-     * @throws SAXException 
-     * @throws TransformerException 
+     * @throws Exception 
+     * @throws GeneralSecurityException 
      */
-    public static void main(String[] args) throws InterruptedException, IOException, SAXException, ParserConfigurationException, TransformerException {
+    public static void main(String[] args) throws GeneralSecurityException, Exception {
 
     	
     	
@@ -167,7 +336,7 @@ public class GetOrderSample {
         
         
         
-        String sellerId = "***";
+        String sellerId = "*****";
         
         
         
@@ -176,7 +345,7 @@ public class GetOrderSample {
         
         
         
-        String mwsAuthToken = "****";
+        String mwsAuthToken = "*****";
         
         
  
@@ -300,7 +469,7 @@ public class GetOrderSample {
       
     
        
-      //only accept 50 orders at a time, this code is to send one at a time, will optimize later. Lists.partition is google lang
+      //only accept 50 orders at a time, this code is to send 50 at a time.  Lists.partition is google lang
       for (List<String> orderidpartition : Lists.partition(str, 50)) {
     	  
     	  System.out.println(orderidpartition.size());
@@ -312,7 +481,7 @@ public class GetOrderSample {
           GetOrderSample.invokeGetOrder(client, request);
           
           
-          
+          //time paused for each request, time out in mili seconds. 
           Thread.sleep(10000);
           
           
