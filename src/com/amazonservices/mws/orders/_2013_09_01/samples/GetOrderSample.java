@@ -16,10 +16,13 @@
 package com.amazonservices.mws.orders._2013_09_01.samples;
 
 import java.util.*;
+
+import javax.xml.bind.Element;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.soap.Node;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -39,10 +42,12 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -51,7 +56,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.orders._2013_09_01.*;
@@ -102,7 +113,157 @@ public class GetOrderSample {
             
             
             
-            //try to out put response xml to file 
+            //Dom parser to par XML
+            
+
+            
+            try {	
+            	
+            	//Initialize new Obj to add retrieved data to DB each time it is being retreived 
+            	
+            	
+               /*
+                //Does not work, input is a string, only takes afile 
+                  File inputFile = new File(responseXml);*/
+            	
+            	//must use input as inputstream
+            	
+            	InputStream stream = new ByteArrayInputStream(responseXml.getBytes(StandardCharsets.UTF_8));
+                
+                DocumentBuilderFactory dbFactory 
+                
+                   = DocumentBuilderFactory.newInstance();
+                
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                
+                org.w3c.dom.Document doc = dBuilder.parse(stream);
+                
+                doc.getDocumentElement().normalize();
+                
+                System.out.println("Root element :" 
+                   + doc.getDocumentElement().getNodeName());
+                
+                NodeList nList = doc.getElementsByTagName("Order");
+                
+                System.out.println("----------------------------");
+                
+                for (int temp = 0; temp < nList.getLength(); temp++) {
+                	
+                   org.w3c.dom.Node nNode = nList.item(temp);
+                   
+                   System.out.println("\nCurrent Element :" 
+                		   
+                      + nNode.getNodeName());
+                   
+                   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                	   
+                	   /*System.out.println("im Here");*/
+                	   
+                    /* 
+                     //**Critical Error, Node can not be cast to type element
+                      Node eElement = (Element) nNode;*/
+                      
+                	   org.w3c.dom.Node eElement =  nNode;
+                     
+                      
+                      /*System.out.println("Im inside of an order");*/
+                      
+                      System.out.println("AmazonOrderId : " 
+                    		  
+                         + ((org.w3c.dom.Element) eElement)
+                         
+                         .getElementsByTagName("AmazonOrderId")
+                         .item(0)
+                         .getTextContent());
+                     
+                    
+                      System.out.println("Name : " 
+                      + ((org.w3c.dom.Element) eElement)
+                         .getElementsByTagName("Name")
+                         .item(0)
+                         .getTextContent());
+                      
+                      
+                      
+                      
+                      System.out.println("AddressLine1: " 
+                      + ((org.w3c.dom.Element) eElement)
+                         .getElementsByTagName("AddressLine1")
+                         .item(0)
+                         .getTextContent());
+                      
+                      
+                      
+                      
+                      System.out.println("City : " 
+                      + ((org.w3c.dom.Element) eElement)
+                      
+                         .getElementsByTagName("City")
+                         
+                         .item(0)       
+                         .getTextContent());
+                      
+                      
+                      
+                      
+                      System.out.println("PostalCode : " 
+                              + ((org.w3c.dom.Element) eElement)
+                              
+                                 .getElementsByTagName("PostalCode")
+                                 
+                                 .item(0)       
+                                 .getTextContent());
+                              
+                      
+                      
+                      System.out.println("CountryCode : " 
+                              + ((org.w3c.dom.Element) eElement)
+                              
+                                 .getElementsByTagName("CountryCode")
+                                 
+                                 .item(0)       
+                                 .getTextContent());
+                              
+                      
+                      
+                      
+                   }
+                }
+             } catch (Exception e) {
+                e.printStackTrace();
+             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+      /*      //try to out put response xml to file 
             
             
             // Parse the given input
@@ -121,28 +282,18 @@ public class GetOrderSample {
             
             
             transformer.transform(source, result);
+            */
+     
             
-            //to do
-            //how to use code do open xml and output excel and save as xls.
-            
-            
-         
-      
-            
-            
-              //create a class to store all variables generated from result form implementation to the DB
-             
-            //try to use jexcelapi to accheive 
-       
-            
-            InputStream fin = new FileInputStream("Y:\\Staffs\\Joey\\Developer\\JoeyAdvisor\\completeorders"+count+ ".xml");
             
         	
          
 
          
 			
-			
+			/*//Retrieve from saved information and try to put it into objects to be wrtitten to DB
+            
+            
             FileInputStream input = new FileInputStream("Y:\\Staffs\\Joey\\Developer\\JoeyAdvisor\\ordertest"+count+ ".xls");  
                 POIFSFileSystem fs = new POIFSFileSystem( input );  
                 HSSFWorkbook wb = new HSSFWorkbook(fs);  
@@ -157,7 +308,8 @@ public class GetOrderSample {
                 {  
                     Amazonorders order = new Amazonorders(responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, null, null, null, responseXml, responseXml, responseXml, responseXml, responseXml, null, responseXml, responseXml, responseXml);
                     row = sheet.getRow(i);  
-
+                    
+                    System.out.println("Number of fileds in order object is "+order.getColumnCount());
 
 	                  order.setAmazonorderid(String.valueOf(row.getCell(0).getRichStringCellValue()));  
 	                  System.out.println(order.getAmazonorderid());
@@ -208,49 +360,9 @@ public class GetOrderSample {
                       order.setQtyshipped(formatter.formatCellValue((row.getCell(16))));
                       System.out.println(order.getQtyshipped());
                       
-                      
-                      
-                      
-                   /*   //check for null values for currency
-                      String currency =formatter.formatCellValue(row.getCell(26));
-                      
-                      if(currency != null)
-                      {
-                      order.setCurrency(currency);
-                    
-                      System.out.println(order.getCurrency());
-                      }
-                     
-                      
-                      
-                      
-                      //check for null values for amount
-                      String amount =formatter.formatCellValue(row.getCell(27));
-                      
-                      if(amount != null)
-                      {
-                    	  
-                    	  order.setAmount(amount);
-                    	
-                          System.out.println(order.getAmount());
- 
-                      }
-                      
-           
-                      //check for null values for email
-                      String email =formatter.formatCellValue(row.getCell(29));
-                      
-                      if(email != null)
-                      {
-                    	  order.setEmail(email);
-                    	 
-                         System.out.println(order.getEmail());
-                      }*/
-                      
                 
-                     
-                      //do insertion of sql here
-                
+                      
+     
                       
                       
 
@@ -271,7 +383,7 @@ public class GetOrderSample {
             
         count++;
 		
-            
+            */
             
             
             return response;
@@ -336,8 +448,7 @@ public class GetOrderSample {
         
         
         
-        String sellerId = "*****";
-        
+        String sellerId = "****";
         
         
         request.setSellerId(sellerId);
@@ -358,7 +469,7 @@ public class GetOrderSample {
         //retrieve a list of amazon order ids 
         
 
-   	 // Location of the source file
+   	 /*// Location of the source file
       String sourceFilePath = "Y:\\Staffs\\Joey\\Developer\\JoeyAdvisor\\order report.xls";
       
       
@@ -409,7 +520,7 @@ public class GetOrderSample {
          	 
          	String a = (excelData.get(i).toString().split(",")[0]);
          	
-         /*	System.out.println(a.substring(1, a.length()));*/
+         	System.out.println(a.substring(1, a.length()));
          	
          	str.add(a.substring(1, a.length()));
          	 
@@ -465,48 +576,113 @@ public class GetOrderSample {
         
       
       
-      System.out.println(str.size());
+      System.out.println(str.size());*/
       
+        
+        
+        //Use DB approach to retrieve order numbers
+//write to db
+        
+        String url = "****";
+        String username = "****";
+        String password = "****";
+        
+        System.out.println("Loading driver...");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            System.out.println("Driver loaded!");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException("Cannot find the driver in the classpath!", e);
+        }
+        
+        System.out.println("Connecting database...");
+        
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+        	
+        	
+            System.out.println("Database connected!");
+            
+            
+            
+            
+            //if successful begin to retrieve amaozn order #
+           
+    
+            String query = "select OrderNumbers from AmazonOrders";
+              
+            
+            Statement st = connection.createStatement();
+            
+           
+           //Intialize Arraylist to store amazon order ids;
+            ArrayList<String> str = new ArrayList<String>();
+            
+         // execute the preparedstatement, and get result
+            ResultSet rs = st.executeQuery(query);
+            
+    
+           while(rs.next()){
+        	   
+        	   //Has to use an object to store the data retireved from mysql
+        	   Amazonorders order = new Amazonorders(query, query, query, query, query, query, query, query, query, query, query, query, query, query, query, query, query, query, query, query, query, 
+        			   query, query, null, null, null, query, query, query, query, query, null, query, query, query);
+        	   
+        	order.setAmazonorderid(rs.getString("OrderNumbers"));
+        	
+        	str.add(order.getAmazonorderid());
+        	   
+        	
+        	   
+        	   
+        	   
+           }
+        
+
+		    for(int i = 0; i<str.size();i++)
+		    {
+		    	
+		    	
+		    	System.out.println(str.get(i));
+		    	
+		    	
+		    }
+            
+            //after retrieving the result, close the connection
+            connection.close();
+            
+            
+            
+            
+           //only accept 50 orders at a time, this code is to send 50 at a time.  Lists.partition is google lang
+            for (List<String> orderidpartition : Lists.partition(str, 50)) {
+          	  
+          	  System.out.println(orderidpartition.size());
+          	  
+          	  request.setAmazonOrderId(orderidpartition);
+              
+
+                // Make the call.
+                GetOrderSample.invokeGetOrder(client, request);
+                
+                
+                //time paused for each request, time out in mili seconds. 
+                Thread.sleep(10000);
+                
+                System.out.println("Im about to get another set");
+                
+          	}
+            
+        }        
+        catch (SQLException e) {
+            throw new IllegalStateException("Cannot connect the database!", e);
+        }
+
+        
+        
     
        
-      //only accept 50 orders at a time, this code is to send 50 at a time.  Lists.partition is google lang
-      for (List<String> orderidpartition : Lists.partition(str, 50)) {
-    	  
-    	  System.out.println(orderidpartition.size());
-    	  
-    	  request.setAmazonOrderId(orderidpartition);
-        
+    
 
-          // Make the call.
-          GetOrderSample.invokeGetOrder(client, request);
-          
-          
-          //time paused for each request, time out in mili seconds. 
-          Thread.sleep(10000);
-          
-          
-    	}
-      
-      
-/*      ArrayList<String> orderids = new ArrayList<String>();
-      
-     orderids.add(str.get(0));
-     
-     
-      request.setAmazonOrderId(orderids);
-
-      
-      
-
-      
-      // Make the call.
-      GetOrderSample.invokeGetOrder(client, request);
-
-       */
-        
-       
-        
-        
         
         
     }

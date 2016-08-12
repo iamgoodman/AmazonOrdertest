@@ -14,5 +14,7 @@
 	<classpathentry kind="lib" path="C:/Users/aps-peter/Desktop/Git/Amazonmwsdevelop/poi-ooxml-3.5-beta5.jar"/>
 	<classpathentry kind="lib" path="C:/Users/aps-peter/Desktop/Git/AmazonOrdertest/google-collect-1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/aps-peter/Desktop/Git/AmazonOrdertest/xmlbeans.jar"/>
+	<classpathentry kind="lib" path="C:/Users/aps-peter/Desktop/Git/AmazonOrdertest/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/aps-peter/Desktop/Git/AmazonOrdertest/mysql-connector-java-5.0.8-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

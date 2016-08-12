@@ -86,7 +86,11 @@ public class Amazonorders {
 		Requestid = requestid;
 	}
 	
+	//get size of fileds for db
 	
+	public int getColumnCount() {
+	    return getClass().getDeclaredFields().length;
+	}
 	//getter and setters
 
 	public String getAmazonorderid() {
