@@ -26,9 +26,9 @@ public class Amazonorders {
 	String OrderType;
 	String Earliestshipdate;
 	String Latestshipdate;
-	Boolean businessorder;
-	Boolean Prime;
-	Boolean Premium;
+	String businessorder;
+	String Prime;
+	String Premium;
 	String Currency;
 	String Amount;
 	String Paymentmethod;
@@ -45,7 +45,7 @@ public class Amazonorders {
 			String customername, String streetname, String city, String state, String zip, String country, String phone,
 			String secondaddress, String qtyshipped, String qtyunshipped, String marketplaceid,
 			String shippingservicelevel, String orderType, String earliestshipdate, String latestshipdate,
-			Boolean businessorder, Boolean prime, Boolean premium, String currency, String amount, String paymentmethod,
+			String businessorder, String prime, String premium, String currency, String amount, String paymentmethod,
 			String email, String fullname, Boolean shippedbyamz, String earlestdeliverydate, String latestdeliverydate,
 			String requestid) {
 		super();
@@ -277,27 +277,27 @@ public class Amazonorders {
 		Latestshipdate = latestshipdate;
 	}
 
-	public Boolean getBusinessorder() {
+	public String getBusinessorder() {
 		return businessorder;
 	}
 
-	public void setBusinessorder(Boolean businessorder) {
+	public void setBusinessorder(String businessorder) {
 		this.businessorder = businessorder;
 	}
 
-	public Boolean getPrime() {
+	public String getPrime() {
 		return Prime;
 	}
 
-	public void setPrime(Boolean prime) {
+	public void setPrime(String prime) {
 		Prime = prime;
 	}
 
-	public Boolean getPremium() {
+	public String getPremium() {
 		return Premium;
 	}
 
-	public void setPremium(Boolean premium) {
+	public void setPremium(String premium) {
 		Premium = premium;
 	}
 

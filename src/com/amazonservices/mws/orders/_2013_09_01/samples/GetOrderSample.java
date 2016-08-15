@@ -88,8 +88,8 @@ public class GetOrderSample {
      * @throws TransformerException 
      */
 	
-	//global counter for generating multiple order files
-	static int count  = 0;
+	/*//global counter for generating multiple order files
+	static int count  = 0;*/
 	
     public static GetOrderResponse invokeGetOrder(
             MarketplaceWebServiceOrders client, 
@@ -176,6 +176,9 @@ public class GetOrderSample {
                          .getElementsByTagName("AmazonOrderId")
                          .item(0)
                          .getTextContent());
+                      
+                      
+                      
                  
                       //set order id to orders obj
                       orders.setAmazonorderid(
@@ -186,97 +189,504 @@ public class GetOrderSample {
                       
                       
                     
-                      System.out.println("Name : " 
-                      + ((org.w3c.dom.Element) eElement)
-                         .getElementsByTagName("Name")
-                         .item(0)
-                         .getTextContent());
-                      
-                    //set Name to orders
-                      orders.setCustomername(
-                    		  ((org.w3c.dom.Element) eElement) 
-                         .getElementsByTagName("Name")
-                         .item(0)
-                         .getTextContent());
-                      
-                      
-                      System.out.println("AddressLine1: " 
-                      + ((org.w3c.dom.Element) eElement)
-                         .getElementsByTagName("AddressLine1")
-                         .item(0)
-                         .getTextContent());
-                      
-                      //set address
+                    //set Name to orders 
+                 try{     
+                    
+                     String name = (((org.w3c.dom.Element) eElement) 
+                     .getElementsByTagName("Name")
+                     .item(0)
+                     .getTextContent());
+                     
+                     orders.setCustomername(
+                       		 name);
+                     
+                 }
+                 catch(NullPointerException e){
+                     
+               
+                    
+                    	 
+                    	 System.out.println("Canceled Order");
+                    	 
+                    	 orders.setCustomername(
+                           		 "");
+                        	 
+                    	 
+                   
+                     
+                     
+                 };
                  
-     
+                  
+                      
+            
+                   //set address    
+                  try{
+                 
+                      String Addr = (((org.w3c.dom.Element) eElement) 
+                              .getElementsByTagName("AddressLine1")
+                              .item(0)
+                              .getTextContent());
+                      
+                      
                       orders.setStreetname(
-                    		  ((org.w3c.dom.Element) eElement) 
-                         .getElementsByTagName("AddressLine1")
-                         .item(0)
-                         .getTextContent());
+                     		 Addr);
                       
                       
-                      System.out.println("City : " 
-                      + ((org.w3c.dom.Element) eElement)
-                      
-                         .getElementsByTagName("City")
-                         
-                         .item(0)       
-                         .getTextContent());
-                      
+                  }
+                     
+                     catch (NullPointerException e)
+                      {
+                     	 
+                     	 orders.setStreetname(
+                            		 "" );
+                         	 
+                     	 
+                      }
+                   
                       
                     
+                    
+                    
                       //set city, might be a state 
-                      orders.setCity(
-                    		  ((org.w3c.dom.Element) eElement) 
-                         .getElementsByTagName("City")
-                         .item(0)
-                         .getTextContent());
+                      
+                      try{
+                    	  
+                      String city = (((org.w3c.dom.Element) eElement) 
+                              .getElementsByTagName("City")
+                              .item(0)
+                              .getTextContent());
                       
                       
-                      System.out.println("PostalCode : " 
-                              + ((org.w3c.dom.Element) eElement)
-                              
-                                 .getElementsByTagName("PostalCode")
-                                 
-                                 .item(0)       
-                                 .getTextContent());
+                	  orders.setCity(
+                    		  city );
+                	  
                       
+                      
+                      }
+                     catch(NullPointerException e)
+                      {
+                    	
+                                  
+                    
+                    	  
+                    	  orders.setCity(
+                        		"" );
+                    	  
+                    	  
+                      }
+                      
+                    
                       //set postal code        
-                      orders.setZip(
-                    		  ((org.w3c.dom.Element) eElement) 
-                         .getElementsByTagName("PostalCode")
-                         .item(0)
-                         .getTextContent());
+                    try{
+                    	
+                    	
+                    
+                      String zip = (((org.w3c.dom.Element) eElement) 
+                              .getElementsByTagName("PostalCode")
+                              .item(0)
+                              .getTextContent());
                       
+                    
+                          
+                    	  
+                    	  orders.setZip(zip);
+                    	  
+                    	  
+                      }
+                     catch(NullPointerException e)
+                      {
+                    	  
+                    	  
+                    	  orders.setZip("");
+                      }
                       
-                      System.out.println("CountryCode : " 
-                              + ((org.w3c.dom.Element) eElement)
+                    
+              //set Country 
+                    try{
+                      String country = (((org.w3c.dom.Element) eElement) 
+                              .getElementsByTagName("CountryCode")
+                              .item(0)
+                              .getTextContent());
+                            
+                  
+                    	  
+                    	  orders.setCountry(country);
+       	  
+                      }
+                      
+                     catch (NullPointerException e)
+                      {
+                    	  
+                    	  orders.setCountry("");
+                    	  
+                    	  
+                      }
+                      
+               
+                 //set fulfillment channel
+                    
+                    
+                    try{
+                    	
+                        String fc = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("FulfillmentChannel")
+                                .item(0)
+                                .getTextContent());
                               
-                                 .getElementsByTagName("CountryCode")
-                                 
-                                 .item(0)       
-                                 .getTextContent());
+                    
+                      	  
+                      	  orders.setFulfillmentchannel(fc);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setFulfillmentchannel("");
+                      	  
+                      	  
+                        }
+                        
+                    
+                 //set order Status
+                    
+                      
+                    try{
+                    	
+                        String os = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("OrderStatus")
+                                .item(0)
+                                .getTextContent());
                               
-                      
-                      //set postal code        
-                      orders.setCountry(
-                    		  ((org.w3c.dom.Element) eElement) 
-                         .getElementsByTagName("CountryCode")
-                         .item(0)
-                         .getTextContent());
-                      
-                      
-                      
-                      //write to db
-                      
+                    
+                      	  
+                      	  orders.setOrderstatus(os);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setOrderstatus("");
+                      	  
+                      	  
+                        }
+                        
+               //set purchase date, date as in string
+                    
+                    
+                    try{
+                    	
+                        String pd = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("PurchaseDate")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setPurchasedate(pd);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setPurchasedate("");
+                      	  
+                      	  
+                        }
+                    
+                    
+                    //set last update date, date as in string 
+                    
+                    try{
+                    	
+                        String ud = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("LastUpdateDate")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setLastupdatedate(ud);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setLastupdatedate("");
+                      	  
+                      	  
+                        }
+                    
+                    
+                    //set Order Type
+                    
+                    try{
+                    	
+                        String ot = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("OrderType")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setOrderType(ot);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setOrderType("");
+                      	  
+                      	  
+                        }
+                    
+                    
+                    
+           //set Shipment Service Level
+                    
+                    try{
+                    	
+                        String ss = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("ShipServiceLevel")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setShipservicelevel(ss);;
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setShipservicelevel("");
+                      	  
+                      	  
+                        }
+                    
+                    
+                //set Currency Code
+                    try{
+                    	
+                        String cc = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("CurrencyCode")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setCurrency(cc);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setCurrency("");
+                      	  
+                      	  
+                        }
+                    
+                   
+                 //set Amount
+                    try{
+                    	
+                        String a = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("Amount")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setAmount(a);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setAmount("");
+                      	  
+                      	  
+                        }
+                    
+                    
+                  //set item shipped
+                    try{
+                    	
+                        String is = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("NumberOfItemsShipped")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setQtyshipped(is);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setQtyshipped("");
+                      	  
+                      	  
+                        }
+                    
+                    
+                    //set item unshipped
+                    try{
+                    	
+                        String iu = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("NumberOfItemsUnshipped")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setQtyunshipped(iu);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setQtyunshipped("");
+                      	  
+                      	  
+                        }
+                    
+                    
+                    
+                    //set BusinessOrder
+                    try{
+                    	
+                        String ib = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("IsBusinessOrder")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setBusinessorder(ib);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setBusinessorder("");
+                      	  
+                      	  
+                        }
+                    
+                    
+                    //set Prime
+                    try{
+                    	
+                        String ip = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("IsPrime")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setPrime(ip);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setPrime("");
+                      	  
+                      	  
+                        }
+                    
+                    
+                    
+                    
+                    //set Preium
+                    
+                    try{
+                    	
+                        String ipo = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("IsPremiumOrder")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setPremium(ipo);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setPremium("");
+                      	  
+                      	  
+                        }
+                    
+                    //setPaymentMethod
+                    try{
+                    	
+                        String pm = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("PaymentMethod")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setPaymentmethod(pm);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setPaymentmethod("");
+                      	  
+                      	  
+                        }
+                    
+                    
+                    //setBuyerEmail
+                    try{
+                    	
+                        String be = (((org.w3c.dom.Element) eElement) 
+                                .getElementsByTagName("BuyerEmail")
+                                .item(0)
+                                .getTextContent());
+                              
+                    
+                      	  
+                      	  orders.setEmail(be);
+         	  
+                        }
+                        
+                       catch (NullPointerException e)
+                        {
+                      	  
+                      	  orders.setEmail("");
+                      	  
+                      	  
+                        }
+                    
                       
                       
                     //write to db
                       
-                      String url = "***";
-                      String username = "***";
-                      String password = "***";
+                      String url = "00";
+                      String username = "00";
+                      String password = "00!";
                       
                       System.out.println("Loading driver...");
                       try {
@@ -285,6 +695,8 @@ public class GetOrderSample {
                       } catch (ClassNotFoundException e) {
                           throw new IllegalStateException("Cannot find the driver in the classpath!", e);
                       }
+                      
+                      
                       
                       System.out.println("Connecting database...");
                       
@@ -296,20 +708,72 @@ public class GetOrderSample {
                           
                           
                           
-                          //if successful begin to insert into Amazon order# to DB
+            
                          
                          
                           	
                           
-                          // the mysql insert statement
-                          String query = " update AmazonOrders set (OrderNumbers)"
-                            + " values (?)";
+                          // Update DB
+                          String query = "UPDATE AmazonOrders SET Name = ?, Address = ?, City = ?, Zip = ?, Country = ?, Fulfillment = ?, "
+                          		+ "OrderStatus = ?, PurchaseDate = ?, LastUpdateDate = ?, OrderType = ?, ShipmentServiceLevel = ?, "
+                          		+ "Currency = ?, Amount = ?, ItemShipped = ?,"
+                          		+ "ItemUnshipped = ?,IsBussinessOrder = ?, IsPrime = ?, "
+                          		+ "IsPreiumOrder = ?,PaymentMethod = ?, Email = ?"
+                          		+ " WHERE OrderNumbers = ?";
+                            
                           
                           
                           //create the mysql insert preparedstatement
                           
                           PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
                          
+                          //insert values to be updated to statement 
+                          
+                          preparedStmt.setString(1,orders.getCustomername());
+                          
+                          preparedStmt.setString(2,orders.getStreetname());
+                          
+                          preparedStmt.setString(3,orders.getCity());
+                          
+                          preparedStmt.setString(4,orders.getZip());
+                          
+                          preparedStmt.setString(5,orders.getCountry());
+                        
+                          preparedStmt.setString(6,orders.getFulfillmentchannel());
+                          
+                          preparedStmt.setString(7,orders.getOrderstatus());
+                          
+                          preparedStmt.setString(8,orders.getPurchasedate());
+                          
+                          preparedStmt.setString(9,orders.getLastupdatedate());
+                          
+                          preparedStmt.setString(10,orders.getOrderType());
+                          
+                          preparedStmt.setString(11,orders.getShipservicelevel());
+                          
+                          preparedStmt.setString(12,orders.getCurrency());
+                          
+                          preparedStmt.setString(13,orders.getAmount());
+                          
+                        
+                          
+                          preparedStmt.setString(14,orders.getQtyshipped());
+                          
+                          preparedStmt.setString(15,orders.getQtyunshipped());
+                          
+                          preparedStmt.setString(16,orders.getBusinessorder());
+                          
+                          preparedStmt.setString(17,orders.getPrime());
+                          
+                          preparedStmt.setString(18,orders.getPremium());
+                          
+                          preparedStmt.setString(19,orders.getPaymentmethod());
+                          
+                          preparedStmt.setString(20,orders.getEmail());
+                          
+                      
+                          preparedStmt.setString(21,orders.getAmazonorderid());
+                          
                           
                        // execute the preparedstatement
                           preparedStmt.execute();
@@ -332,7 +796,17 @@ public class GetOrderSample {
                    }
                 }
              } catch (Exception e) {
+            	 
+            	 System.out.println("here is the canceled Order");
+            	 
+
                 e.printStackTrace();
+                
+                
+                
+                
+                
+                
              }
             
             
@@ -472,16 +946,7 @@ public class GetOrderSample {
   
             
             
-            
-            
-            
-     
-            
-            
-            
-            
-            
-            
+
             
         count++;
 		
@@ -550,7 +1015,7 @@ public class GetOrderSample {
         
         
         
-        String sellerId = "****";
+        String sellerId = "000";
         
         
         request.setSellerId(sellerId);
@@ -558,7 +1023,7 @@ public class GetOrderSample {
         
         
         
-        String mwsAuthToken = "*****";
+        String mwsAuthToken = "0000";
         
         
  
@@ -685,9 +1150,9 @@ public class GetOrderSample {
         //Use DB approach to retrieve order numbers
 //write to db
         
-        String url = "****";
-        String username = "****";
-        String password = "****";
+        String url = "00";
+        String username = "00";
+        String password = "00";
         
         System.out.println("Loading driver...");
         try {
