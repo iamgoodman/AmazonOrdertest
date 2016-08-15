@@ -60,6 +60,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -120,7 +121,7 @@ public class GetOrderSample {
             try {	
             	
             	//Initialize new Obj to add retrieved data to DB each time it is being retreived 
-            	
+            	Amazonorders orders = new Amazonorders(responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, responseXml, null, null, null, responseXml, responseXml, responseXml, responseXml, responseXml, null, responseXml, responseXml, responseXml);
             	
                /*
                 //Does not work, input is a string, only takes afile 
@@ -175,7 +176,15 @@ public class GetOrderSample {
                          .getElementsByTagName("AmazonOrderId")
                          .item(0)
                          .getTextContent());
-                     
+                 
+                      //set order id to orders obj
+                      orders.setAmazonorderid(
+                    		  ((org.w3c.dom.Element) eElement) 
+                         .getElementsByTagName("AmazonOrderId")
+                         .item(0)
+                         .getTextContent());
+                      
+                      
                     
                       System.out.println("Name : " 
                       + ((org.w3c.dom.Element) eElement)
@@ -183,7 +192,12 @@ public class GetOrderSample {
                          .item(0)
                          .getTextContent());
                       
-                      
+                    //set Name to orders
+                      orders.setCustomername(
+                    		  ((org.w3c.dom.Element) eElement) 
+                         .getElementsByTagName("Name")
+                         .item(0)
+                         .getTextContent());
                       
                       
                       System.out.println("AddressLine1: " 
@@ -192,7 +206,14 @@ public class GetOrderSample {
                          .item(0)
                          .getTextContent());
                       
-                      
+                      //set address
+                 
+     
+                      orders.setStreetname(
+                    		  ((org.w3c.dom.Element) eElement) 
+                         .getElementsByTagName("AddressLine1")
+                         .item(0)
+                         .getTextContent());
                       
                       
                       System.out.println("City : " 
@@ -204,6 +225,13 @@ public class GetOrderSample {
                          .getTextContent());
                       
                       
+                    
+                      //set city, might be a state 
+                      orders.setCity(
+                    		  ((org.w3c.dom.Element) eElement) 
+                         .getElementsByTagName("City")
+                         .item(0)
+                         .getTextContent());
                       
                       
                       System.out.println("PostalCode : " 
@@ -213,7 +241,13 @@ public class GetOrderSample {
                                  
                                  .item(0)       
                                  .getTextContent());
-                              
+                      
+                      //set postal code        
+                      orders.setZip(
+                    		  ((org.w3c.dom.Element) eElement) 
+                         .getElementsByTagName("PostalCode")
+                         .item(0)
+                         .getTextContent());
                       
                       
                       System.out.println("CountryCode : " 
@@ -224,6 +258,74 @@ public class GetOrderSample {
                                  .item(0)       
                                  .getTextContent());
                               
+                      
+                      //set postal code        
+                      orders.setCountry(
+                    		  ((org.w3c.dom.Element) eElement) 
+                         .getElementsByTagName("CountryCode")
+                         .item(0)
+                         .getTextContent());
+                      
+                      
+                      
+                      //write to db
+                      
+                      
+                      
+                    //write to db
+                      
+                      String url = "***";
+                      String username = "***";
+                      String password = "***";
+                      
+                      System.out.println("Loading driver...");
+                      try {
+                          Class.forName("com.mysql.jdbc.Driver");
+                          System.out.println("Driver loaded!");
+                      } catch (ClassNotFoundException e) {
+                          throw new IllegalStateException("Cannot find the driver in the classpath!", e);
+                      }
+                      
+                      System.out.println("Connecting database...");
+                      
+                      try (Connection connection = DriverManager.getConnection(url, username, password)) {
+                      	
+                      	
+                          System.out.println("Database connected!");
+                          
+                          
+                          
+                          
+                          //if successful begin to insert into Amazon order# to DB
+                         
+                         
+                          	
+                          
+                          // the mysql insert statement
+                          String query = " update AmazonOrders set (OrderNumbers)"
+                            + " values (?)";
+                          
+                          
+                          //create the mysql insert preparedstatement
+                          
+                          PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
+                         
+                          
+                       // execute the preparedstatement
+                          preparedStmt.execute();
+                          System.out.println("inserted");
+                          
+                          
+                          
+                          //after inserting, close the connection
+                          connection.close();
+                          
+                      } catch (SQLException e) {
+                          throw new IllegalStateException("Cannot connect the database!", e);
+                      }
+                      
+                      
+                      
                       
                       
                       
