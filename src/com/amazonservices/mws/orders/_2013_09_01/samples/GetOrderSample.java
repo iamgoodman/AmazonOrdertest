@@ -714,7 +714,7 @@ public class GetOrderSample {
                           	
                           
                           // Update DB
-                          String query = "UPDATE AmazonOrders SET Name = ?, Address = ?, City = ?, Zip = ?, Country = ?, Fulfillment = ?, "
+                          String query = "UPDATE AmazonOrders SET CustomerName = ?, Street = ?, City = ?, Zip = ?, Country = ?, Fulfillment = ?, "
                           		+ "OrderStatus = ?, PurchaseDate = ?, LastUpdateDate = ?, OrderType = ?, ShipmentServiceLevel = ?, "
                           		+ "Currency = ?, Amount = ?, ItemShipped = ?,"
                           		+ "ItemUnshipped = ?,IsBussinessOrder = ?, IsPrime = ?, "
